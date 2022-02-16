@@ -1,9 +1,8 @@
-# Чисельні методи. Лабораторна робота №1
-### Віннічук Н.Д. К-25
-#### Варіант №40
+% Numerical methods <br> Lab №1 <br> Variant №40
+% Nazar Vinnichuk
 
-* Досліджуване рівняння: $f(x)=x^3+\sin{x}-12x+1=0$
-* Похибка: $\epsilon=10^{-4}$
+Equation: $f(x)=x^3+\sin{x}-12x+1=0$ <br>
+Max error: $\epsilon=10^{-4}$
 
 ```python
 from matplotlib.pyplot import *
