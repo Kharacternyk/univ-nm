@@ -21,22 +21,28 @@ grid(True)
 show()
 ```
 
-Let $x \in [0; \frac{\pi}{4}]$.
+Let $x \in [0; \frac{\pi}{4}]$. Evaluating the function at the bounds of the
+chosen range yields values of different signs:
 
 $$ f(0) = 1 > 0 $$
 $$ f(\frac{\pi}{4}) < 1 + 1 - 6 + 1 = -3 < 0 $$
-<hr>
+
+The derivatives are
 
 $$ f'(x) = 3x^2 + \cos{x} - 12 $$
 $$ f''(x) = 6x - \sin{x} $$
 $$ f'''(x) = 6 - \cos{x} $$
-<hr>
+
+The first and the second derivative do not change signs at the bounds of the
+chosen range:
 
 $$ f'(0) = -11 < 0 $$
 $$ f'(\frac{\pi}{4}) < 3 + 1 - 12 = -8 < 0 $$
 $$ f''(0) = 0 $$
 $$ f''(\frac{\pi}{4}) > 3 - 1 = 2 > 0 $$
-<hr>
+
+From that and $f'''(x) > 0, \forall{x}$, one can prove that the first
+derivative is negative in the chosen range:
 
 $$
 f'''(x) > 0, \forall{x} \Rightarrow
