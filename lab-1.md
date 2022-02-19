@@ -3,8 +3,8 @@
 
 ### Problem
 
-Equation: $f(x) = x^3 + \sin{x} - 12x + 1 = 0$ <br>
-Maximal error: $\epsilon = 10^{-4}$
+Equation: $f(x) = x^3 + \sin{x} - 12x + 1 = 0$. <br>
+Maximal error: $\epsilon = 10^{-4}$.
 
 ### Segregating the Root
 
@@ -27,7 +27,7 @@ chosen range yields values of different signs:
 $$ f(0) = 1 > 0 $$
 $$ f(\frac{\pi}{4}) < 1 + 1 - 6 + 1 = -3 < 0 $$
 
-The derivatives are
+The derivatives are:
 
 $$ f'(x) = 3x^2 + \cos{x} - 12 $$
 $$ f''(x) = 6x - \sin{x} $$
@@ -56,7 +56,7 @@ $$ f(x) = 0 \Rightarrow x = \frac{x^3 + \sin{x} + 1}{12} = \phi(x) $$
 $$ \phi'(x) = \frac{3x^2 + \cos{x}}{12} $$
 $$ |\phi'(x)| < \frac{3 + 1}{12}, x \in [0; \frac{\pi}{4}] < 1 $$
 
-Let $x_0 = 0.05$
+Let $x_0 = 0.05$.
 
 ```python
 def phi(x):
@@ -73,7 +73,7 @@ print(f"x = {x}")
 
 ### Newton's Method
 
-Let $x_0 = 0.05$
+Let $x_0 = 0.05$.
 
 $$ f(x_0) > 0 + 0 - 0.6 + 1 > 0 $$
 
@@ -81,16 +81,16 @@ As we have already proved while chosing the range:
 
 $$ f''(x_0) > 0 \Leftarrow x_0 \in [0; \frac{\pi}{4}] $$
 
-Thus,
+Thus:
 
 $$ f(x_0) \cdot f''(x_0) > 0 $$
 
 Which means that $x_n$ will coverge to $x_{\star}$ if $x_0 = 0.05$.
 
-As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have
+As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have:
 
-$$ m = \min{|f'(x)|} = |f'(\frac{\pi}{4})| $$
-$$ M = \max{|f'(x)|} = |f'(0)| = 11 $$
+$$ m = \min_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(\frac{\pi}{4})| $$
+$$ M = \max_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(0)| = 11 $$
 
 ```python
 def f_derivative(x):
