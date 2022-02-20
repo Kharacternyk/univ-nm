@@ -96,7 +96,7 @@ px = x_0
 while abs(x - px) >= (1 - q) * epsilon / q:
     n += 1
     px = x
-    x = phi(px)
+    x = phi(x)
     report(n, x)
 ```
 
@@ -145,6 +145,24 @@ for i in range(n):
 ```
 
 As one can see, the desired precision is already achieved at the first iteration.
+
+### Modified Newton's Method
+
+```python
+f_derivative_at_x_0 = f_derivative(x_0)
+x = x_0 - f(x_0)/f_derivative_at_x_0
+
+report(0, x_0)
+report(1, x)
+
+n = 1
+px = x_0
+while abs(x - px) >= epsilon:
+    n += 1
+    px = x
+    x = x - f(x)/f_derivative_at_x_0
+    report(n, x)
+```
 
 <style>
     .MathJax * {
