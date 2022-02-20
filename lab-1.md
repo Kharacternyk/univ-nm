@@ -54,7 +54,11 @@ $$
 
 $$ f(x) = 0 \Rightarrow x = \frac{x^3 + \sin{x} + 1}{12} = \phi(x) $$
 $$ \phi'(x) = \frac{3x^2 + \cos{x}}{12} $$
-$$ |\phi'(x)| < \frac{3 + 1}{12}, x \in [0; \frac{\pi}{4}] < 1 $$
+$$ \phi''(x) = \frac{6x - \sin{x}}{12} $$
+
+As $\phi''(x)$ and $\phi'(x)$ are positive in the chosen range, we have:
+
+$$ |\phi'(x)| \leq q = |\phi'(\frac{\pi}{4})| < 1, x \in [0; \frac{\pi}{4}] $$
 
 Let $x_0 = 0.05$.
 
@@ -62,13 +66,29 @@ Let $x_0 = 0.05$.
 def phi(x):
     return (x**3 + sin(x) + 1) / 12
 
+def phi_derivative(x):
+    return (3*x*x + cos(x)) / 12
+
+epsilon = 1e-4
+q = abs(phi_derivative(pi/4))
+
+assert q < 1
+
+def report(i, x):
+    print(f"{i}: x = {x:.5f}")
+
 px = 0.05
 x = phi(px)
-while abs(x - px) > 1e-4:
+n = 1
+
+report(0, px)
+report(1, x)
+
+while abs(x - px) >= (1 - q) * epsilon / q:
+    n += 1
     px = x
     x = phi(px)
-
-print(f"x = {x}")
+    report(n, x)
 ```
 
 ### Newton's Method
@@ -102,15 +122,13 @@ q = M * (pi/4 - 0.05) / (2 * m)
 
 assert q < 1
 
-epsilon = 1e-4
 n = int(log2(log((pi/4 - 0.05) / epsilon) / log(1/q)) + 1) + 1
 
 x = 0.05
+report(0, x)
 for i in range(n):
     x = x - f(x)/f_derivative(x)
-
-print(f"{n} iterations")
-print(f"x = {x}")
+    report(i + 1, x)
 ```
 
 <style>
