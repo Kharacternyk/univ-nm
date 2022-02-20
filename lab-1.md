@@ -77,11 +77,11 @@ assert q < 1
 def report(i, x):
     print(f"{i}: x = {x:.5f}")
 
-px = 0.05
+px = x_0 = 0.05
 x = phi(px)
 n = 1
 
-report(0, px)
+report(0, x_0)
 report(1, x)
 
 while abs(x - px) >= (1 - q) * epsilon / q:
@@ -91,13 +91,19 @@ while abs(x - px) >= (1 - q) * epsilon / q:
     report(n, x)
 ```
 
+The expected number of iterations is:
+
+```python
+int(log(abs(phi(x_0) - x_0) / (1 - q) / epsilon) / log(1/q)) + 1
+```
+
 ### Newton's Method
 
 Let $x_0 = 0.05$.
 
 $$ f(x_0) > 0 + 0 - 0.6 + 1 > 0 $$
 
-As we have already proved while chosing the range:
+As we have already proved while choosing the range:
 
 $$ f''(x_0) > 0 \Leftarrow x_0 \in [0; \frac{\pi}{4}] $$
 
@@ -105,7 +111,7 @@ Thus:
 
 $$ f(x_0) \cdot f''(x_0) > 0 $$
 
-Which means that $x_n$ will coverge to $x_{\star}$ if $x_0 = 0.05$.
+Which means that $x_n$ will converge to $x_{\star}$ if $x_0 = 0.05$.
 
 As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have:
 
@@ -130,6 +136,8 @@ for i in range(n):
     x = x - f(x)/f_derivative(x)
     report(i + 1, x)
 ```
+
+As one can see, the desired precision is already achieved at the first iteration.
 
 <style>
     .MathJax * {
