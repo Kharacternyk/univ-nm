@@ -54,11 +54,8 @@ Thus, in $[0; \frac{\pi}{4}]$ there is exactly one root, which is of our interes
 
 ### Defining Common Input
 
-We will use  $x_0 = 0.05$ in all the methods.
-The convergence for such input will be proved for each method separately.
-
 ```python
-x_0 = 0.05
+x_0 = 0.5
 epsilon = 1e-4
 
 def report(i, x):
@@ -108,6 +105,7 @@ int(log(abs(phi(x_0) - x_0) / (1 - q) / epsilon) / log(1/q)) + 1
 
 ### Newton's Method
 
+<!--
 $$ f(x_0) > 0 + 0 - 0.6 + 1 > 0 $$
 
 As we have already proved while choosing the range:
@@ -119,6 +117,7 @@ Thus:
 $$ f(x_0) \cdot f''(x_0) > 0 $$
 
 Which means that $x_n$ will converge to $x_{\star}$ if $x_0 = 0.05$.
+-->
 
 As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have:
 
@@ -131,7 +130,7 @@ def f_derivative(x):
 
 m = abs(f_derivative(pi/4))
 M = abs(f_derivative(0))
-q = M * (pi/4 - x_0) / (2 * m)
+q = M * max(pi/4 - x_0, x_0) / (2 * m)
 
 assert q < 1
 
@@ -143,8 +142,6 @@ for i in range(n):
     x = x - f(x)/f_derivative(x)
     report(i + 1, x)
 ```
-
-As one can see, the desired precision is already achieved at the first iteration.
 
 ### Modified Newton's Method
 
