@@ -50,6 +50,21 @@ f''(x) > 0, x \in [0; \frac{\pi}{4}] \Rightarrow
 f'(x) < 0, x \in [0; \frac{\pi}{4}]
 $$
 
+Thus, in $[0; \frac{\pi}{4}]$ there is exactly one root, which is of our interest.
+
+### Defining Common Input
+
+We will use  $x_0 = 0.05$ in all the methods.
+The convergence for such input will be proved for each method separately.
+
+```python
+x_0 = 0.05
+epsilon = 1e-4
+
+def report(i, x):
+    print(f"{i}: x = {x:.5f}")
+```
+
 ### Simple Iteration Method
 
 $$ f(x) = 0 \Rightarrow x = \frac{x^3 + \sin{x} + 1}{12} = \phi(x) $$
@@ -60,8 +75,6 @@ As $\phi''(x)$ and $\phi'(x)$ are positive in the chosen range, we have:
 
 $$ |\phi'(x)| \leq q = |\phi'(\frac{\pi}{4})| < 1, x \in [0; \frac{\pi}{4}] $$
 
-Let $x_0 = 0.05$.
-
 ```python
 def phi(x):
     return (x**3 + sin(x) + 1) / 12
@@ -69,21 +82,17 @@ def phi(x):
 def phi_derivative(x):
     return (3*x*x + cos(x)) / 12
 
-epsilon = 1e-4
 q = abs(phi_derivative(pi/4))
 
 assert q < 1
 
-def report(i, x):
-    print(f"{i}: x = {x:.5f}")
-
-px = x_0 = 0.05
-x = phi(px)
-n = 1
+x = phi(x_0)
 
 report(0, x_0)
 report(1, x)
 
+n = 1
+px = x_0
 while abs(x - px) >= (1 - q) * epsilon / q:
     n += 1
     px = x
@@ -98,8 +107,6 @@ int(log(abs(phi(x_0) - x_0) / (1 - q) / epsilon) / log(1/q)) + 1
 ```
 
 ### Newton's Method
-
-Let $x_0 = 0.05$.
 
 $$ f(x_0) > 0 + 0 - 0.6 + 1 > 0 $$
 
@@ -116,21 +123,21 @@ Which means that $x_n$ will converge to $x_{\star}$ if $x_0 = 0.05$.
 As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have:
 
 $$ m = \min_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(\frac{\pi}{4})| $$
-$$ M = \max_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(0)| = 11 $$
+$$ M = \max_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(0)| $$
 
 ```python
 def f_derivative(x):
     return 3*x*x + cos(x) - 12
 
 m = abs(f_derivative(pi/4))
-M = 11
-q = M * (pi/4 - 0.05) / (2 * m)
+M = abs(f_derivative(0))
+q = M * (pi/4 - x_0) / (2 * m)
 
 assert q < 1
 
-n = int(log2(log((pi/4 - 0.05) / epsilon) / log(1/q)) + 1) + 1
+n = int(log2(log((pi/4 - x_0) / epsilon) / log(1/q)) + 1) + 1
 
-x = 0.05
+x = x_0
 report(0, x)
 for i in range(n):
     x = x - f(x)/f_derivative(x)
