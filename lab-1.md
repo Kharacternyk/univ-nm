@@ -82,6 +82,7 @@ def phi_derivative(x):
 q = abs(phi_derivative(pi/4))
 
 assert q < 1
+assert abs(phi(x_0) - x_0) <= (1-q) * max(pi/4-x_0, x_0)
 
 x = phi(x_0)
 
@@ -119,17 +120,21 @@ $$ f(x_0) \cdot f''(x_0) > 0 $$
 Which means that $x_n$ will converge to $x_{\star}$ if $x_0 = 0.05$.
 -->
 
-As $f''(x)$ is non-negative and $f'(x)$ is negative in the chosen range, we have:
+As $f''(x)$ and $f'''(x)$ are non-negative and $f'(x)$ is negative in the
+chosen range, we have:
 
 $$ m = \min_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(\frac{\pi}{4})| $$
-$$ M = \max_{x \in [0; \frac{\pi}{4}]} |f'(x)| = |f'(0)| $$
+$$ M = \max_{x \in [0; \frac{\pi}{4}]} |f''(x)| = |f''(\frac{\pi}{4})| $$
 
 ```python
 def f_derivative(x):
     return 3*x*x + cos(x) - 12
 
+def f_second_derivative(x):
+    return 6*x - sin(x)
+
 m = abs(f_derivative(pi/4))
-M = abs(f_derivative(0))
+M = abs(f_second_derivative(pi/4))
 q = M * max(pi/4 - x_0, x_0) / (2 * m)
 
 assert q < 1
