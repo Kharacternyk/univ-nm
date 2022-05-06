@@ -14,7 +14,7 @@ from numpy import *
 def f(x):
     return sinh(x) - 12 * tanh(x) - 0.311
 
-sample = linspace(-4, 4)
+sample = linspace(-6, 6)
 plot(sample, f(sample))
 grid(True)
 show()
@@ -34,6 +34,10 @@ $$
 f(4) = \frac{e^4 - e^{-4}}{2} - 12\frac{e^4 - e^{-4}}{e^4 + e^{-4}} - 0.311 >
 \frac{50 - 1}{2} - 12\frac{81 - 0}{50 + 0} - 0.311 > 24.5 - 24 - 0.311 > 0
 $$
+
+$$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
+
+$$ x > 4 \Rightarrow f'(x) > 50 - \frac{12}{2500} > 0$$
 
 
 <style>
