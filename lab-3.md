@@ -39,6 +39,56 @@ $$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
 
 $$ x > 4 \Rightarrow f'(x) > 50 - \frac{12}{2500} > 0$$
 
+### Defining Common Input
+
+```python
+x_first = 2
+x_last = 4
+x_count = 10
+
+def report(p):
+    sample = linspace(x_first, x_last)
+    fs = f(sample)
+    ps = p(sample)
+
+    plot(sample, fs)
+    plot(sample, ps)
+    grid(True)
+    show()
+
+    plot(sample, fs - ps)
+    grid(True)
+    show()
+```
+
+### Computing the Partial Differences
+
+```python
+diff_cache = {}
+
+def diff(xs):
+    if not xs in diff_cache:
+        if len(xs) > 1:
+            diff_cache[xs] = (diff(xs[1:]) - diff(xs[:-1])) / (xs[-1] - xs[0])
+        else:
+            diff_cache[xs] = f(xs[0])
+    return diff_cache[xs]
+```
+
+### Newton's Polynomial With Uniform Nodes
+
+```python
+def uniform_p(x):
+    xs = tuple(x_first + (x_last - x_first) * (i / (x_count - 1)) for i in range(x_count))
+    result = diff(xs)
+    for i in range(x_count - 1):
+        result *= x - xs[i + 1]
+        result += diff(xs[i + 1:])
+    return result
+
+report(uniform_p)
+```
+
 
 <style>
     .MathJax * {
