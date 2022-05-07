@@ -47,6 +47,12 @@ x_last = 4
 x_count = 10
 
 def report(p):
+    sample = linspace(-6, 6)
+    plot(sample, f(sample))
+    plot(sample, p(sample))
+    grid(True)
+    show()
+
     sample = linspace(x_first, x_last)
     fs = f(sample)
     ps = p(sample)
