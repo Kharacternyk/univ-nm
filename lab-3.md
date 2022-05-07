@@ -88,7 +88,7 @@ def diff(xs):
 ### Обчислення поліному Н'ютона за схемою Горнера
 
 ```python
-def generic_p(x, xs):
+def horner_p(x, xs):
     result = diff(xs)
     for i in range(x_count - 1):
         result *= x - xs[i + 1]
@@ -99,11 +99,24 @@ def generic_p(x, xs):
 ### Поліном Н'ютона з рівновіддаленими вузлами
 
 ```python
-def uniform_p(x):
-    xs = tuple(x_first + (x_last - x_first) * (i / (x_count - 1)) for i in range(x_count))
-    return generic_p(x, xs)
+uniform_xs = tuple(
+    x_first + (x_last - x_first) * (i / (x_count - 1))
+    for i in range(x_count)
+)
 
-report(uniform_p)
+report(lambda x: horner_p(x, uniform_xs))
+```
+
+### Поліном Н'ютона з вузлами у нулях полінома Чебишова
+
+```python
+chebyshev_xs = tuple(
+    (x_first + x_last) / 2 +
+    (x_last - x_first) * cos(pi * (2 * i + 1) / (2 * (x_count + 1))) / 2
+    for i in range(x_count)
+)
+
+report(lambda x: horner_p(x, chebyshev_xs))
 ```
 
 
