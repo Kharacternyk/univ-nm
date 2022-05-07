@@ -37,7 +37,7 @@ $$
 
 $$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
 
-$$ x > 4 \Rightarrow f'(x) > 50 - \frac{12}{2500} > 0$$
+$$ x > 2 \Rightarrow f'(x) > 2.5 - \frac{12}{6.25} > 0 \Rightarrow f(x)\uparrow $$
 
 ### Початкові значення
 
