@@ -1,11 +1,11 @@
-% Numerical methods <br> Lab №3 <br> Variant №40
+% Чисельні методи <br> Лабораторна робота №3 <br> Варіант №40
 % Nazar Vinnichuk
 
-### Problem
+### Досліджувана функція
 
-Equation: $\mathrm{sh}\,x - 12\,\mathrm{th}\,x - 0.311 = 0$.
+$$ \mathrm{sh}\,x - 12\,\mathrm{th}\,x - 0.311 $$
 
-### Segregating the Root
+### Виділення кореня
 
 ```python
 from matplotlib.pyplot import *
@@ -39,13 +39,17 @@ $$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
 
 $$ x > 4 \Rightarrow f'(x) > 50 - \frac{12}{2500} > 0$$
 
-### Common Input and Output
+### Початкові значення
 
 ```python
 x_first = 2
 x_last = 4
 x_count = 10
+```
 
+### Вигляд графіків
+
+```python
 def report(p):
     sample = linspace(-6, 6)
     plot(sample, f(sample))
@@ -67,7 +71,7 @@ def report(p):
     show()
 ```
 
-### Computing the Partial Differences
+### Обчислення розділених різниць
 
 ```python
 diff_cache = {}
@@ -81,7 +85,7 @@ def diff(xs):
     return diff_cache[xs]
 ```
 
-### Generic Newton's Polynomial via Horner's Scheme
+### Обчислення поліному Н'ютона за схемою Горнера
 
 ```python
 def generic_p(x, xs):
@@ -92,7 +96,7 @@ def generic_p(x, xs):
     return result
 ```
 
-### Newton's Polynomial With Uniform Nodes
+### Поліном Н'ютона з рівновіддаленими вузлами
 
 ```python
 def uniform_p(x):
@@ -104,6 +108,9 @@ report(uniform_p)
 
 
 <style>
+    body {
+        font-family: sans-serif;
+    }
     .MathJax * {
         color: inherit !important;
     }
