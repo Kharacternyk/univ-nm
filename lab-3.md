@@ -39,7 +39,7 @@ $$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
 
 $$ x > 4 \Rightarrow f'(x) > 50 - \frac{12}{2500} > 0$$
 
-### Defining Common Input
+### Common Input and Output
 
 ```python
 x_first = 2
@@ -81,16 +81,23 @@ def diff(xs):
     return diff_cache[xs]
 ```
 
-### Newton's Polynomial With Uniform Nodes
+### Generic Newton's Polynomial via Horner's Scheme
 
 ```python
-def uniform_p(x):
-    xs = tuple(x_first + (x_last - x_first) * (i / (x_count - 1)) for i in range(x_count))
+def generic_p(x, xs):
     result = diff(xs)
     for i in range(x_count - 1):
         result *= x - xs[i + 1]
         result += diff(xs[i + 1:])
     return result
+```
+
+### Newton's Polynomial With Uniform Nodes
+
+```python
+def uniform_p(x):
+    xs = tuple(x_first + (x_last - x_first) * (i / (x_count - 1)) for i in range(x_count))
+    return generic_p(x, xs)
 
 report(uniform_p)
 ```
