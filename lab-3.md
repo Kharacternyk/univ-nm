@@ -87,8 +87,7 @@ def report(xs):
     print("Вузли інтерполяції:")
     print(xs, "\n")
     print("Поліном прямої інтерполяції:")
-    print(p(Polynomial([0, 1])))
-    print()
+    print(p(Polynomial([0, 1])), "\n")
     print("Поліном оберненої інтерполяції:")
     print(inverted_p(Polynomial([0, 1])))
 
