@@ -84,6 +84,8 @@ def report(xs):
     p = horner_p(xs, fxs)
     inverted_p = horner_p(fxs, xs)
 
+    print("Вузли інтерполяції:")
+    print(xs, "\n")
     print("Поліном прямої інтерполяції:")
     print(p(Polynomial([0, 1])))
     print()
