@@ -10,6 +10,7 @@ $$ \mathrm{sh}\,x - 12\,\mathrm{th}\,x - 0.311 $$
 ```python
 from matplotlib.pyplot import *
 from numpy import *
+from numpy.polynomial.polynomial import Polynomial
 
 def f(x):
     return sinh(x) - 12 * tanh(x) - 0.311
@@ -51,19 +52,26 @@ x_count = 10
 
 ```python
 def report(xs, p):
+    cache = {}
+    inverted_cache = {}
     fxs = tuple(f(x) for x in xs)
 
+    print("Поліном прямої інтерполяції:")
+    print(p(Polynomial([0, 1]), xs, fxs, cache))
+    print()
+    print("Поліном оберненої інтерполяції:")
+    print(p(Polynomial([0, 1]), fxs, xs, inverted_cache))
+
     sample = linspace(x_first, x_last)
+    inverted_sample = linspace(f(x_first), f(x_last))
     fs = f(sample)
-    ps = p(sample, xs, fxs, {})
+    ps = p(sample, xs, fxs, cache)
+    inverted_ps = p(inverted_sample, fxs, xs, inverted_cache)
 
     plot(sample, fs)
     plot(sample, ps)
     grid(True)
     show()
-
-    inverted_sample = linspace(f(x_first), f(x_last))
-    inverted_ps = p(inverted_sample, fxs, xs, {})
 
     plot(fs, sample)
     plot(inverted_sample, inverted_ps)
