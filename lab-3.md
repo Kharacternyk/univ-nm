@@ -127,6 +127,45 @@ chebyshev_xs = tuple(
 report(chebyshev_xs)
 ```
 
+### Побудова сплайнів
+
+```python
+from numpy.linalg import solve
+
+xs = uniform_xs
+h = (x_last - x_first) / (x_count - 1)
+hfs = [(f(xs[i]) - 2 * f(xs[i+1]) + f(xs[i + 2])) / h for i in range(x_count - 2)]
+a = [[0] * (x_count - 2) for i in range(x_count - 2)]
+
+for i in range(x_count - 2):
+    a[i][i] = 2 * h / 3
+    if i + 1 < x_count - 2:
+        a[i+1][i] = h / 6
+        a[i][i+1] = h / 6
+
+ms = [0] + list(solve(array(a), array(hfs))) + [0]
+
+sample = linspace(x_first, x_last)
+plot(sample, f(sample))
+
+for i in range(1, x_count):
+    def s(x):
+        result = 0
+        result += ms[i - 1] * ((xs[i] - x) ** 3) / 6
+        result += ms[i] * ((x - xs[i - 1]) ** 3) / 6
+        result += (f(xs[i - 1]) - ms[i - 1] * h * h / 6) * (xs[i] - x)
+        result += (f(xs[i]) - ms[i] * h * h / 6) * (x - xs[i - 1])
+        result /= h
+        return result
+
+    print(s(Polynomial([0, 1])))
+    sample = linspace(xs[i-1], xs[i])
+    plot(sample, s(sample))
+
+grid(True)
+show()
+```
+
 
 <style>
     body {
