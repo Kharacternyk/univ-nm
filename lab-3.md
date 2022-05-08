@@ -10,7 +10,6 @@ $$ \mathrm{sh}\,x - 12\,\mathrm{th}\,x - 0.311 $$
 ```python
 from matplotlib.pyplot import *
 from numpy import *
-from numpy.polynomial.polynomial import Polynomial
 
 def f(x):
     return sinh(x) - 12 * tanh(x) - 0.311
@@ -78,6 +77,8 @@ x_count = 10
 ### Формат виводу результатів інтерполяцій
 
 ```python
+from numpy.polynomial.polynomial import Polynomial
+
 def report(xs):
     fxs = tuple(f(x) for x in xs)
     p = horner_p(xs, fxs)
