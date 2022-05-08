@@ -40,45 +40,6 @@ $$ f'(x) = \mathrm{ch}\,x - \frac{12}{\mathrm{ch}^2\,x} $$
 
 $$ x > 2 \Rightarrow f'(x) > 2.5 - \frac{12}{6.25} > 0 \Rightarrow f(x)\uparrow $$
 
-### Початкові значення
-
-```python
-x_first = 2
-x_last = 4
-x_count = 10
-```
-
-### Вигляд графіків
-
-```python
-def report(xs, p):
-    cache = {}
-    inverted_cache = {}
-    fxs = tuple(f(x) for x in xs)
-
-    print("Поліном прямої інтерполяції:")
-    print(p(Polynomial([0, 1]), xs, fxs, cache))
-    print()
-    print("Поліном оберненої інтерполяції:")
-    print(p(Polynomial([0, 1]), fxs, xs, inverted_cache))
-
-    sample = linspace(x_first, x_last)
-    inverted_sample = linspace(f(x_first), f(x_last))
-    fs = f(sample)
-    ps = p(sample, xs, fxs, cache)
-    inverted_ps = p(inverted_sample, fxs, xs, inverted_cache)
-
-    plot(sample, fs)
-    plot(sample, ps)
-    grid(True)
-    show()
-
-    plot(fs, sample)
-    plot(inverted_sample, inverted_ps)
-    grid(True)
-    show()
-```
-
 ### Обчислення розділених різниць
 
 ```python
@@ -95,13 +56,54 @@ def diff(xs, fxs, cache):
 ### Обчислення поліному Н'ютона за схемою Горнера
 
 ```python
-def horner_p(x, xs, fxs, cache):
-    result = diff(xs, fxs, cache)
-    for i in range(x_count - 1):
-        result *= x - xs[i + 1]
-        result += diff(xs[i + 1:], fxs[i + 1:], cache)
-    return result
+def horner_p(xs, fxs):
+    cache = {}
+    def compute(x):
+        result = diff(xs, fxs, cache)
+        for i in range(len(xs) - 1):
+            result *= x - xs[i + 1]
+            result += diff(xs[i + 1:], fxs[i + 1:], cache)
+        return result
+    return compute
 ```
+
+### Вузли інтерполяції
+
+```python
+x_first = 2
+x_last = 4
+x_count = 10
+```
+
+### Формат виводу результатів інтерполяцій
+
+```python
+def report(xs):
+    fxs = tuple(f(x) for x in xs)
+    p = horner_p(xs, fxs)
+    inverted_p = horner_p(fxs, xs)
+
+    print("Поліном прямої інтерполяції:")
+    print(p(Polynomial([0, 1])))
+    print()
+    print("Поліном оберненої інтерполяції:")
+    print(inverted_p(Polynomial([0, 1])))
+
+    sample = linspace(x_first, x_last)
+    inverted_sample = linspace(f(x_first), f(x_last))
+    fs = f(sample)
+
+    plot(sample, fs)
+    plot(sample, p(sample))
+    grid(True)
+    show()
+
+    plot(fs, sample)
+    plot(inverted_sample, inverted_p(inverted_sample))
+    grid(True)
+    show()
+```
+
 
 ### Поліном Н'ютона з рівновіддаленими вузлами
 
@@ -110,7 +112,7 @@ uniform_xs = tuple(
     x_first + (x_last - x_first) * (i / (x_count - 1))
     for i in range(x_count)
 )
-report(uniform_xs, horner_p)
+report(uniform_xs)
 ```
 
 ### Поліном Н'ютона з вузлами у нулях полінома Чебишова
@@ -121,7 +123,7 @@ chebyshev_xs = tuple(
     (x_last - x_first) * cos(pi * (2 * i + 1) / (2 * (x_count + 1))) / 2
     for i in range(x_count)
 )
-report(chebyshev_xs, horner_p)
+report(chebyshev_xs)
 ```
 
 
