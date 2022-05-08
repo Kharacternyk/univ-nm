@@ -50,23 +50,23 @@ x_count = 10
 ### Вигляд графіків
 
 ```python
-def report(p):
-    sample = linspace(-6, 6)
-    plot(sample, f(sample))
-    plot(sample, p(sample))
-    grid(True)
-    show()
+def report(xs, p):
+    fxs = tuple(f(x) for x in xs)
 
     sample = linspace(x_first, x_last)
     fs = f(sample)
-    ps = p(sample)
+    ps = p(sample, xs, fxs, {})
 
     plot(sample, fs)
     plot(sample, ps)
     grid(True)
     show()
 
-    plot(sample, fs - ps)
+    inverted_sample = linspace(f(x_first), f(x_last))
+    inverted_ps = p(inverted_sample, fxs, xs, {})
+
+    plot(fs, sample)
+    plot(inverted_sample, inverted_ps)
     grid(True)
     show()
 ```
@@ -74,25 +74,24 @@ def report(p):
 ### Обчислення розділених різниць
 
 ```python
-diff_cache = {}
-
-def diff(xs):
-    if not xs in diff_cache:
+def diff(xs, fxs, cache):
+    if not xs in cache:
         if len(xs) > 1:
-            diff_cache[xs] = (diff(xs[1:]) - diff(xs[:-1])) / (xs[-1] - xs[0])
+            cache[xs] = (diff(xs[1:], fxs[1:], cache) - diff(xs[:-1], fxs[:-1], cache))
+            cache[xs] /= xs[-1] - xs[0]
         else:
-            diff_cache[xs] = f(xs[0])
-    return diff_cache[xs]
+            cache[xs] = fxs[0]
+    return cache[xs]
 ```
 
 ### Обчислення поліному Н'ютона за схемою Горнера
 
 ```python
-def horner_p(x, xs):
-    result = diff(xs)
+def horner_p(x, xs, fxs, cache):
+    result = diff(xs, fxs, cache)
     for i in range(x_count - 1):
         result *= x - xs[i + 1]
-        result += diff(xs[i + 1:])
+        result += diff(xs[i + 1:], fxs[i + 1:], cache)
     return result
 ```
 
@@ -103,8 +102,7 @@ uniform_xs = tuple(
     x_first + (x_last - x_first) * (i / (x_count - 1))
     for i in range(x_count)
 )
-
-report(lambda x: horner_p(x, uniform_xs))
+report(uniform_xs, horner_p)
 ```
 
 ### Поліном Н'ютона з вузлами у нулях полінома Чебишова
@@ -115,8 +113,7 @@ chebyshev_xs = tuple(
     (x_last - x_first) * cos(pi * (2 * i + 1) / (2 * (x_count + 1))) / 2
     for i in range(x_count)
 )
-
-report(lambda x: horner_p(x, chebyshev_xs))
+report(chebyshev_xs, horner_p)
 ```
 
 
