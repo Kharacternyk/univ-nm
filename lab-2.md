@@ -28,7 +28,7 @@ n = len(sle)
 set_printoptions(precision=2, suppress=True)
 ```
 
-### Метод Гауса
+### Метод Гаусса
 
 ```python
 print("Прямий хід:\n")
