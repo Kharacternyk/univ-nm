@@ -17,23 +17,25 @@ $$
 ```python
 from numpy import *
 
-m = array([
+sle = array([
     [1, 2, 1, 1, 23],
     [5, 2, 1, 2, 36],
     [7, 1, 3, 1, 35],
     [3, 5, 2, 1, 42],
 ])
 
-n = len(m)
+n = len(sle)
 set_printoptions(precision=2, suppress=True)
 ```
 
 ### Метод Гауса
 
 ```python
-a = m
+print("Прямий хід:\n")
+print(sle, "\n")
 
-print(a)
+a = copy(sle)
+
 for k in range(n):
     l = argmax(abs(a[:,k]))
     p = identity(n)
@@ -41,17 +43,21 @@ for k in range(n):
     a_ = p @ a
     m = identity(n)
     m[k][k] = 1 / a_[k][k]
+
     for i in range(k + 1, n):
         m[i][k] = -a_[i][k] / a_[k][k]
-    a = m @ a_
-    print(a)
 
+    a = m @ a_
+
+    print(a, "\n")
+
+print("Зворотній хід:\n")
 xs = array([])
+
 for i in range(n):
     j = n - 1 - i
     xs = append(xs, a[j][n] - sum(a[j][j + 1:n] * xs))
-xs = xs[::-1]
-print(xs)
+    print(xs[::-1])
 ```
 
 
