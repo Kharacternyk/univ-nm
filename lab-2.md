@@ -35,12 +35,19 @@ print("Прямий хід:\n")
 print(sle, "\n")
 
 a = copy(sle)
+det = 1
 
 for k in range(n):
     l = argmax(abs(a[:,k]))
+
+    if l != k:
+        det *= -1
+
     p = identity(n)
     p[[l, k]] = p[[k, l]]
     a_ = p @ a
+    det *= a_[k][k]
+
     m = identity(n)
     m[k][k] = 1 / a_[k][k]
 
@@ -57,7 +64,9 @@ xs = array([])
 for i in range(n):
     j = n - 1 - i
     xs = append(xs, a[j][n] - sum(a[j][j + 1:n] * xs))
-    print(xs[::-1])
+    print(xs[::-1], "\n")
+
+print("Визначник:", det)
 ```
 
 
