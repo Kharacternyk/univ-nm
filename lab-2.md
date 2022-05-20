@@ -32,7 +32,6 @@ set_printoptions(precision=2, suppress=True)
 
 ```python
 print("Прямий хід:\n")
-print(sle, "\n")
 
 a = copy(sle)
 det = 1
@@ -45,6 +44,10 @@ for k in range(n):
 
     p = identity(n)
     p[[l, k]] = p[[k, l]]
+
+    print("P:")
+    print(p)
+
     a_ = p @ a
     det *= a_[k][k]
 
@@ -54,19 +57,25 @@ for k in range(n):
     for i in range(k + 1, n):
         m[i][k] = -a_[i][k] / a_[k][k]
 
+    print("M:")
+    print(m)
+
     a = m @ a_
 
-    print(a, "\n")
+    print("A:")
+    print(a)
+    print()
 
 print("Зворотній хід:\n")
+
 xs = array([])
 
 for i in range(n):
     j = n - 1 - i
     xs = append(xs, a[j][n] - sum(a[j][j + 1:n] * xs))
-    print(xs[::-1], "\n")
+    print(xs[::-1])
 
-print("Визначник:", det)
+print("\nВизначник:", det)
 ```
 
 
