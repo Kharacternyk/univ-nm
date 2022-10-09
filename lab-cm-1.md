@@ -1,6 +1,8 @@
 # Комп'ютерне моделювання <br> Лабораторна робота №1
 ###### Віннічук Назар <br> МІ-3
 
+#### №1
+
 ```python
 import numpy
 
@@ -62,6 +64,21 @@ runge(lambda x: 4 / (1 + x**2), (0, 1), 5e-5, 2, integrate_via_trapezoids)
 ```python
 runge(lambda x: 4 / (1 + x**2), (0, 1), 5e-5, 4, integrate_via_simpson)
 ```
+
+#### №14
+
+$$
+    \int_0^1 \frac{dx}{\sqrt{x(1+x^2)}} =
+    \int_0^\delta \frac{dx}{\sqrt{x(1+x^2)}} +
+    \int_\delta^1 \frac{dx}{\sqrt{x(1+x^2)}} = I_1 + I_2
+$$
+$$
+    I_1 \le \int_0^\delta \frac{dx}{\sqrt{x}} = 2\sqrt{x} \Bigr|_0^\delta
+    = 2\sqrt{\delta}
+$$
+
+Нехай $\delta = 0.01$, тоді $I_1 <= 0.2$, тоді $I_2$ необхідно обчислити з точністю
+$0.3$ задля досягнення сумарної точності $0.5$.
 
 <style>
     body {
