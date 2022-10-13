@@ -100,6 +100,35 @@ $$
 integrate_via_left_rectangles(lambda x: 1 / (x * (1 + x*x))**0.5, (0.01, 1), 991)
 ```
 
+#### №29
+
+$$
+    \int_0^\infty \ln\tanh\frac{x}{2}\,dx
+    = \int_0^\infty \ln\frac{e^x-1}{e^x+1}\,dx
+    = \int_0^1 \frac{1}{t}\ln\frac{e^{-\ln{t}}-1}{e^{-\ln{t}}+1}\,dt = \\
+    = \int_0^1 \frac{1}{t}\ln\frac{\frac{1}{t}-1}{\frac{1}{t}+1}\,dt
+    = \int_{-1}^1 \frac{1}{1+k}\ln\frac{\frac{2}{1+k}-1}{\frac{2}{1+k}+1}\,dk
+    = \int_{-1}^1 \frac{1}{1+k}\ln\frac{1-k}{3+k}\,dk
+$$
+
+Використаємо поліноми Лежандра:
+
+$$
+    L_2(x) = 0 \Rightarrow k_1 = \frac{1}{\sqrt{3}}, k_2 = -\frac{1}{\sqrt{3}}, c_1 = c_2 = 1
+$$
+
+```python
+def f(k):
+    return 1 / (1 + k) * numpy.log((1 - k) / (3 + k))
+
+f(1/numpy.sqrt(3)) + f(-1/numpy.sqrt(3))
+```
+
+$$
+    |R(f)| \le \frac{\max_{x \in [-1; 1]}|(\frac{1}{1+k}\ln\frac{1-k}{3+k})^{IV}|2^5(2!)^4}
+    {5(4!)^3} = \infty
+$$
+
 <style>
     body {
         font-family: sans-serif;
