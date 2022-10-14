@@ -3,22 +3,41 @@
 
 #### №1
 
+> Знайти наближене значення числа π з 5
+> правильними значущими цифрами за його iнтегральним
+> представленням π = $\int_0^1\frac{4}{1+x^2}\,dx$
+> за допомогою квадратурної формули 1) лiвих прямокутникiв;
+> 2) трепецiй; 3) Сiмпсона. Використати
+> правило Рунге. Яку кiлькiсть значень пiдiнтегральної
+> функцiї необхiдно використати в кожному випадку?
+
+Побудуємо графік підінтегральної функції.
+
+```python
+import matplotlib.pyplot as pyplot
+import numpy
+
+def f(x):
+    return 4 / (1 + x**2)
+
+pyplot.plot(numpy.linspace(0, 1), f(numpy.linspace(0, 1)))
+pyplot.grid(True)
+pyplot.show()
+```
+
 Реалізуємо універсальну функцію правила Рунге та функції інтегрування
 різними методами для підстановки в неї.
 
 ```python
-import numpy
-
-
 def runge(function, bounds, precision, precision_rank, integrate):
     node_count = 2
     integrals = [
-        integrate(function, bounds, node_count),
-        integrate(function, bounds, node_count * 2),
+        (node_count, integrate(function, bounds, node_count)),
+        (node_count * 2, integrate(function, bounds, node_count * 2)),
     ]
-    while abs(integrals[-1] - integrals[-2]) / (2**precision_rank - 1) > precision:
+    while abs(integrals[-1][1] - integrals[-2][1]) / (2**precision_rank - 1) > precision:
         node_count *= 2
-        integrals.append(integrate(function, bounds, node_count * 2))
+        integrals.append((node_count * 2, integrate(function, bounds, node_count * 2)))
     return integrals
 
 
@@ -61,29 +80,55 @@ def integrate_via_simpson(function, bounds, node_count):
 Викличемо функцію правила Рунге з різними методами інтергування,
 підставляючи підінтегральну функцію, межі та точність з умови,
 а також відповідний кожному методу порядок точності.
-Функція правила Рунге повертає список з наближених значень
-інтегралу на кожному кроці, тобто останнє значення є кінцевим результатом,
+Функція правила Рунге повертає список з кількості використаних вузлів та
+наближених значень інтегралу на кожному кроці,
+тобто останнє значення є кінцевим результатом,
 що задовольняє задану точність.
+
+У методі лівих прямокутників фактична кількість обчислених значень функції на кожному кроці
+рівна $n-1$, де $n$ — виведена кількість вузлів.
+У методі трапецій фактична кількість обчислених значень функції на кожному кроці
+рівна $n$.
+У методі Сімпсона фактична кількість обчислених значень функції на кожному кроці
+рівна $2n-1$ через використання половинних індексів.
 
 ###### Метод лівих прямокутників
 
 ```python
-runge(lambda x: 4 / (1 + x**2), (0, 1), 5e-5, 1, integrate_via_left_rectangles)
+runge(f, (0, 1), 5e-5, 1, integrate_via_left_rectangles)
 ```
 
 ###### Метод трапецій
 
 ```python
-runge(lambda x: 4 / (1 + x**2), (0, 1), 5e-5, 2, integrate_via_trapezoids)
+runge(f, (0, 1), 5e-5, 2, integrate_via_trapezoids)
 ```
 
 ###### Метод Сімпсона
 
 ```python
-runge(lambda x: 4 / (1 + x**2), (0, 1), 5e-5, 4, integrate_via_simpson)
+runge(f, (0, 1), 5e-5, 4, integrate_via_simpson)
 ```
 
 #### №14
+
+> Наближено обчислити iнтеграл $I = \int_0^1 \frac{dx}{\sqrt{x(1+x^2)}}$
+> за допомогою методу обрiзання
+> границь з точнiстю $\epsilon = 0.5$. Використати метод
+> лiвих прямокутникiв, оцiнку залишкових членiв.
+
+Побудуємо графік підінтегральної функції.
+
+```python
+def f(x):
+    return 1 / (x * (1 + x*x))**0.5
+
+pyplot.plot(numpy.linspace(0.0001, 1), f(numpy.linspace(0.0001, 1)))
+pyplot.grid(True)
+pyplot.show()
+```
+
+Розіб'ємо інтеграл.
 
 $$
     \int_0^1 \frac{dx}{\sqrt{x(1+x^2)}} =
@@ -115,14 +160,39 @@ $$
 $$
 
 ```python
-integrate_via_left_rectangles(lambda x: 1 / (x * (1 + x*x))**0.5, (0.01, 1), 991)
+integrate_via_left_rectangles(f, (0.01, 1), 991)
 ```
 
+<a href="https://www.wolframalpha.com/input?i=integral+from+0+to+1+1%2Fsqrt%28x%281%2Bx%5E2%29%29">
+    Справжнє значення інтегралу
+</a>
+$1.85$.
+
 #### №29
+
+> Наближено обчислити iнтеграл
+> $I = \int_0^\infty \ln\tanh\frac{x}{2}\,dx$
+> за формулою Гауса для $n = 2$. Оцiнити похибку.
+
+Побудуємо графік підінтегральної функції.
+
+```python
+def f(x):
+    return numpy.log((numpy.exp(x) - 1) / (numpy.exp(x) + 1)) / numpy.exp(-x)
+
+pyplot.plot(numpy.linspace(0.0001, 10), f(numpy.linspace(0.0001, 10)))
+pyplot.grid(True)
+pyplot.show()
+```
 
 Я не зміг розв'язати цю задачу методом Гауса зі скінченною апріорною похибкою.
 Проте, розв'язок методом Гауса з поліномами Лежандра дав на диво гарну
 апостеріорну похибку у $0.1$.
+
+<a href="https://www.wolframalpha.com/input?i=integral+from+0+to+inf+ln+tanh+x%2F2">
+    Справжнє значення інтегралу
+</a>
+$-2.47$.
 
 ##### Поліноми Лежандра
 $$
@@ -141,10 +211,10 @@ $$
 $$
 
 ```python
-def f(k):
+def f_1(k):
     return 1 / (1 + k) * numpy.log((1 - k) / (3 + k))
 
-f(1/numpy.sqrt(3)) + f(-1/numpy.sqrt(3))
+f_1(1/numpy.sqrt(3)) + f_1(-1/numpy.sqrt(3))
 ```
 
 $$
@@ -169,9 +239,6 @@ $$
 $$
 
 ```python
-def f(x):
-    return numpy.log((numpy.exp(x) - 1) / (numpy.exp(x) + 1)) / numpy.exp(-x)
-
 -2 * f(1) + 2/3 * f(3)
 ```
 
