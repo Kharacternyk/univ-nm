@@ -1,11 +1,9 @@
 {
-  inputs.utils.url = "github:numtide/flake-utils";
-
-  outputs = { self, nixpkgs, utils }: utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, flake-utils }: flake-utils.lib.eachDefaultSystem (system:
     with import nixpkgs { inherit system; }; {
       devShell = with {
         server = writeShellScriptBin "server" ''
-          ls *.md | entr pweave -f md2html /_ &
+          ls *.md | entr make &
           python -m http.server
         '';
       }; mkShell {
