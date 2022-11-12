@@ -49,6 +49,8 @@ pyplot.show()
 
 ##### Метод Рунге-Кутта III порядку точності
 
+Знайдемо значення $y$ на заданому проміжку з відповідним кроком.
+
 ```python
 euler_ys = ys
 ys = [y_1]
@@ -79,7 +81,9 @@ pyplot.show()
 > $(x^2+y)y′ = 1$; $y(1) = 1.1323$.
 > Початковi значення y(x) знайти методом Ейлера-Коші.
 
-##### Пошук початкових значень матодом Ейлера-Коші
+##### Пошук початкових значень методом Ейлера-Коші
+
+Знайдемо початкові значення $y$, кількість яких відповідає кількості кроків методу Адамса.
 
 ```python
 runge_ys = ys
@@ -107,6 +111,42 @@ pyplot.show()
 ```
 
 ##### Метод Адамса
+
+Знайдемо значення $y$ на заданому проміжку з відповідним кроком використовуючи
+початкові значення, знайдені методом Ейлера-Коші.
+
+```python
+y_primes = [f(x, y) for x, y in zip(xs[:steps], ys)]
+
+def delta(delta_index, y_index):
+    if delta_index == 1:
+        return h * (ys[y_index + 1] - ys[y_index])
+    return delta(delta_index - 1, y_index + 1) - delta(delta_index - 1, y_index)
+
+for i in range(steps, len(xs)):
+    delta_y = h * (
+        y_primes[-1] +
+        1 / 2 * delta(1, -2) +
+        5 / 12 * delta(2, -3) +
+        3 / 8 * delta(3, -4)
+    )
+    ys.append(delta_y + ys[-1])
+    if i + 1 < len(xs):
+        y_primes.append(f(xs[i + 1], ys[-1]))
+
+print(ys)
+```
+
+Порівняємо графіки отримані методом Ейлера (синій), методом Рунге-Кутта (жовтогарячий),
+та методом Адамса (зелений).
+
+```python
+pyplot.plot(xs, euler_ys)
+pyplot.plot(xs, runge_ys)
+pyplot.plot(xs, ys)
+pyplot.grid(True)
+pyplot.show()
+```
 
 <style>
     body {
