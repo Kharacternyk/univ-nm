@@ -50,6 +50,54 @@ def equation(i):
 > \end{cases}
 > $$
 
+Перепишемо умову.
+
+$$
+\begin{cases}
+y' = z \\
+z' = 1 - \frac{2}{x-2}z - (x − 2)y \\
+y(0) = −0.5 \\
+y(1) = −1 \\
+\end{cases}
+$$
+
+$$
+\begin{cases}
+y_{i+1} = y_i + hz \\
+z_{i+1} = z_i + h(1 - \frac{2}{x_i-2}z_i - (x_i − 2)y_i) \\
+y(0) = −0.5 \\
+z(0) = \tan(\alpha)
+\end{cases}
+$$
+
+Розв'яжемо задачу для $\epsilon = 0.01$.
+
+```python
+epsilon = 0.01
+y_0 = -0.5
+y_last = -1
+
+def compute_ys(tg_alpha):
+    ys = [y_0]
+    zs = [tg_alpha]
+    for i in range(len(xs) - 1):
+        x = xs[i]
+        y = ys[i]
+        z = zs[i]
+        ys.append(y + h * z)
+        zs.append(z + h * (1 - 2 / (x - 2) * z - (x - 2) * y))
+    return ys
+
+min_alpha = 0
+max_alpha =
+tg_alpha = (y_last - y_0) / (xs[-1] - xs[0])
+ys = compute_ys(tg_alpha)
+
+while abs(ys[-1] - y_last) >= epsilon:
+    if ys[-1] - y_last > 0:
+        tg_alpha
+```
+
 <style>
     body {
         font-family: sans-serif;
