@@ -89,7 +89,7 @@ y_last = -1
 def compute_ys(tg_alpha):
     ys = [y_0]
     zs = [tg_alpha]
-    for i in range(len(xs) - 1):
+    for i in range(len(xs)):
         x = xs[i]
         y = ys[i]
         z = zs[i]
